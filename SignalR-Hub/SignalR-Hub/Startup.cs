@@ -22,7 +22,8 @@ namespace SignalRHub
                 builder
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    .WithOrigins("http://localhost:4200");
+                    .WithOrigins("http://localhost:4200")
+                    .AllowCredentials();
             }));
 
             services.AddSignalR();
@@ -40,7 +41,7 @@ namespace SignalRHub
             app.UseCors("CorsPolicy");
             app.UseSignalR(routes =>
             {
-                routes.MapHub<NotifyHub>("notify");
+                routes.MapHub<NotifyHub>("/notify");
             });
 
             app.UseMvc();

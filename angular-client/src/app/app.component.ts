@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HubConnection } from '@aspnet/signalr-client';
+import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 
 import { Message } from 'primeng/api';
 
@@ -16,11 +16,13 @@ export class AppComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this._hubConnection = new HubConnection('http://localhost:1874/notify');
+    this._hubConnection =new HubConnectionBuilder().withUrl('http://localhost:1875/notify').build();
+    
+    //new HubConnection('http://localhost:1874/notify');
     this._hubConnection
       .start()
       .then(() => console.log('Connection started!'))
-      .catch(err => console.log('Error while establishing connection :('));
+      .catch(err => console.log(err));
 
     this._hubConnection.on('BroadcastMessage', (type: string, payload: string) => {
       this.msgs.push({ severity: type, summary: payload });
